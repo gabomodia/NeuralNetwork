@@ -20,6 +20,7 @@ class MultilayerPerceptron:
 
     def train(self, X, T, eta, epochs=1):
         for i in range(epochs):
+            print("Comenzando epoch %d", i)
             orden = list(range(len(X)))
             rnd.shuffle(orden)
             for j in range(len(X)):
@@ -44,6 +45,7 @@ class MultilayerPerceptron:
                     for k in range(len(self.w_1)):
                         self.w_1[k] += eta * delta_1 * x[k]
 
+        print("Entrenamiento completado")
     def forward_propagate(self, x):
         y_1 = [self.activation((np.matmul(x, self.w_1)+self.b_1)[i]) for i in range(self.n_hidden)]
         y_2 = [self.activation((np.matmul(y_1, self.w_2)+self.b_2)[i]) for i in range(self.n_outputs)]
@@ -52,13 +54,3 @@ class MultilayerPerceptron:
     def classify(self, x):
         return np.argmax(self.forward_propagate(x)[1])
 
-
-X = np.array([0, 1, 1, 0, 0, -1, -1, 0]).reshape(4, 2)
-print(X)
-T = np.array([1, 0, 1, 0, 0, 1, 0, 1]).reshape(4, 2)
-print(T)
-
-nn = MultilayerPerceptron(2, 3, 2)
-nn.train(X, T, 0.1, 100)
-resul = nn.classify(np.array([1, 0]))
-print(resul)
